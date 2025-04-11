@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/import_BTN"
+        android:text="导入txt文件"
+        android:textSize="10sp"
+        />
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/import_BTN"
+        android:id="@+id/BTN01"
+        android:text="按钮1"
+        android:textSize="10sp"
+        />
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/BTN01"
+        android:id="@+id/BTN02"
+        android:text="按钮2"
+        android:textSize="10sp"
+        />
+<!--    <androidx.viewpager2.widget.ViewPager2-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:visibility="gone"-->
+<!--        android:layout_height="0dp"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/import_BTN"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        android:id="@+id/viewpager0"-->
+<!--        />-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/import_BTN"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/recyclerview"
+        />
+
+  <com.google.android.material.textview.MaterialTextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintTop_toBottomOf="@+id/BTN01"
+      app:layout_constraintStart_toStartOf="parent"
+      android:visibility="gone"
+      android:text="显示文本\n asdas\n asdasd\n a\n a\na\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a\n a"
+      android:textSize="10sp"
+
+      android:id="@+id/textview_show"
+      android:textAppearance="?attr/textAppearanceBodyLarge"
+      />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

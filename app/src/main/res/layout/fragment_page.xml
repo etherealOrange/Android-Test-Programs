@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- fragment_page.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvChapterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceHeadlineSmall"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:id="@+id/scroll_view_SV"
+        >
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:text="waht sssss sdsadsasad what ssssssssssssssss ssssss,sssssss'ssssssssssss ssssssss ssssssssssssssssssssss sssssssss sssss"
+            android:lineSpacingMultiplier="1.2"
+            android:textSize="20sp"
+            android:breakStrategy="high_quality"
+            android:hyphenationFrequency="full"
+            android:scrollHorizontally="true"
+            android:justificationMode="inter_word"
+            android:letterSpacing="0.2"
+
+            android:inputType="textMultiLine"
+            />
+    </ScrollView>
+
+
+</LinearLayout>
