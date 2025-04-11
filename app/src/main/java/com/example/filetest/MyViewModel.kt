@@ -2,6 +2,7 @@ package com.example.filetest
 
 import android.content.ContentResolver
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -38,7 +39,7 @@ class MyViewModel: ViewModel() {
             Pager(
                 config = PagingConfig(
                     pageSize = 1,
-                    maxSize = 3,
+                    maxSize = 10,
                     enablePlaceholders = false
                 ),
                 pagingSourceFactory = { FilePagingSource(resolver,file)}

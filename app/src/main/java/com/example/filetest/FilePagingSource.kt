@@ -24,16 +24,20 @@ class FilePagingSource(
         return try {
             // 确定当前页码（首次加载时key为null）
             val pageNumber = params.key ?: 0// 当前页码(首次加载为null，默认0)
-            val pageSize = 1000 // 每页大小
+//            val pageSize = 1000 // 每页大小
+            val readChapterNum = 10
+            val startChapterNum = pageNumber * readChapterNum
+            val endChapterNum = (pageNumber + 1) * readChapterNum - 1
+
 
             // 计算读取范围（每页100行）
             //TODO:之后改为数据库表中的 章节 开始与结束 行号
-            val startChapterLines = pageNumber * pageSize
-            val endChapterLines = (pageNumber + 1) * pageSize - 1
-            Log.d("FPS", "开始读取文件 1 的第 ${startChapterLines}行到${endChapterLines}行")
+//            val startChapterLines = pageNumber * pageSize
+//            val endChapterLines = (pageNumber + 1) * pageSize - 1
+            Log.d("FPS", "开始读取文件 1 的第 读$startChapterNum 章节 到 读$endChapterNum 章节")
 
             // 读取文件指定行
-            val chapters = readFileChapters(file, startChapterLines, endChapterLines)
+            val chapters = readFileChapters(file, startChapterNum, endChapterNum)
 
             // 构建分页结果
             //这里的章节数不对应行数
@@ -54,26 +58,29 @@ class FilePagingSource(
 
     private fun readFileChapters(file: Uri, start: Int, end: Int): List<BookChapter> {
         return mutableListOf<BookChapter>().apply {
-            Log.d("FPS","开始读取文件  2 的第 ${start}行到${end}行")
+            Log.d("FPS","开始读取文件  2 开始从章节$start 读  读到$end 章节")
             val inputStream = contentResolver.openInputStream(file)?: throw Exception("无法打开文件")
                 inputStream.bufferedReader().use {
                 //现在的行数
-                var currentLine =0
+                var currentChapterNum =0
                 //每行读取的内容
                 var lineContent = String()
-                Log.d("FPS","跳过前面部分  的第 ${start}行到${end}行")
-                while (currentLine < start && it.readLine() !=null){
-                    currentLine++
+                Log.d("FPS","跳过前面部分  开始从章节$start 读  读到$end 章节")
+                while (currentChapterNum < start &&  it.readLine().also { lineContent=it } !=null){
+                    if(isChapterLine(lineContent)){
+                        currentChapterNum++
+                    }
                 }
-                Log.d("FPS","读取到文件 1 的第 ${currentLine}行")
+                Log.d("FPS","读取到文件 1 的第 ${currentChapterNum-1}章")
                 //当前章节
                 var currentChapter: BookChapter? = null
                 //章节内容汇总
                 var summaryContent = StringBuilder()
-                while (currentLine<=end && it.readLine().also { lineContent = it }!=null){
+                while (currentChapterNum <= end && it.readLine().also { lineContent = it }!=null){
                     //填入章节名
                     if(isChapterLine(lineContent) && currentChapter ==null){
                         currentChapter = BookChapter(lineContent,"")
+                        currentChapterNum++
                     }
                     //下一章节了, 把上一章节添加到列表中
                     else if(isChapterLine(lineContent) && currentChapter != null){
@@ -83,6 +90,7 @@ class FilePagingSource(
                         add(currentChapter)
                         currentChapter = BookChapter(lineContent,"")
                         summaryContent.clear()
+                        currentChapterNum++
                     }
                     //有内容但是不在章节内
                     //开头的简介部分
@@ -94,10 +102,9 @@ class FilePagingSource(
                     {
                         summaryContent.append(lineContent+"\n")
                     }
-                    currentLine++
                 }
-                Log.d("FPS","读取到文件 2 的第 ${currentLine}行\n")
-                if(currentChapter!=null) {
+                Log.d("FPS","读取到文件 2 的第 ${currentChapterNum}章\n")
+                if(currentChapter!=null && summaryContent.isNotEmpty()) {
                     currentChapter = currentChapter.copy(
                         content = summaryContent.toString()
                     )
