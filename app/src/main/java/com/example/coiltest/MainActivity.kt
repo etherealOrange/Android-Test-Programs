@@ -1,15 +1,25 @@
 package com.example.coiltest
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -99,8 +109,63 @@ class MainActivity : AppCompatActivity() {
             Log.d("Main",imagePath.length().toString())
 
         }
+        createNotificationChannel()
+        bind.NotifyBTN.setOnClickListener {
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                ActivityCompat.requestPermissions(
+                    this,arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    1001
+                )
+            }
+            showSimpleNotification()
+
+        }
 
 
 
     }
+    private fun createNotificationChannel() {
+        val channel = NotificationChannel(
+            "default_channel_id", // 渠道ID，必须唯一
+            "默认通知",            // 用户可见的渠道名称
+            NotificationManager.IMPORTANCE_HIGH // 重要性级别
+        ).apply {
+            description = "这是默认通知渠道的描述" // 渠道描述
+        }
+
+        // 获取NotificationManager
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        // 创建渠道
+        notificationManager.createNotificationChannel(channel)
+    }
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
+    private fun showSimpleNotification() {
+        // 1. 创建通知构建器
+        val builder = NotificationCompat.Builder(this, "default_channel_id")
+            .setSmallIcon(R.drawable.ic_launcher_background) // 必须设置的小图标
+            .setContentTitle("我的通知标题")         // 通知标题
+            .setContentText("这是通知的内容文本")     // 通知内容
+            .setAutoCancel(true)
+            .setPriority(NotificationCompat.PRIORITY_HIGH) // 优先级
+
+        // 2. 获取NotificationManager
+        val notificationManager = NotificationManagerCompat.from(this)
+
+        // 3. 发送通知
+        // 第一个参数是通知ID，必须是唯一的，用于后续更新或取消通知
+        notificationManager.notify(1, builder.build())
+    }
+
+
 }
