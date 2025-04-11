@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.MainFragment"
+    android:fitsSystemWindows="true">
+
+    <Button
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="insert"
+        android:textSize="20sp"
+        android:id="@+id/insertBTN"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="delete"
+        android:textSize="20sp"
+        android:id="@+id/deleteBTN"
+        app:layout_constraintTop_toTopOf="@id/insertBTN"
+        app:layout_constraintStart_toEndOf="@+id/insertBTN"
+    />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/selectedBTN"
+        android:text="selected"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/deleteBTN"
+        />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/selectedID_ET"
+        android:inputType="number"
+        android:digits="0123456789"
+        app:layout_constraintTop_toBottomOf="@+id/deleteID_ET"
+        app:layout_constraintStart_toEndOf="@+id/insertTitle_ET"
+        android:hint="Enter ID to select"
+        />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/deleteID_ET"
+        android:inputType="number"
+        android:digits="0123456789"
+        app:layout_constraintTop_toBottomOf="@+id/deleteBTN"
+        app:layout_constraintStart_toStartOf="@id/deleteBTN"
+        android:hint="Enter ID to delete"
+        />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/insertTitle_ET"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@+id/deleteID_ET"
+        app:layout_constraintStart_toStartOf="parent"
+        android:hint="Enter Title to innsert"
+        />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/insertAuthor_ET"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@+id/insertTitle_ET"
+        app:layout_constraintStart_toStartOf="parent"
+        android:hint="Enter Author to insert"
+        />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/insertPages_ET"
+        android:inputType="number"
+        android:digits="0123456789"
+        app:layout_constraintTop_toBottomOf="@+id/insertAuthor_ET"
+        app:layout_constraintStart_toStartOf="parent"
+        android:hint="Enter Pages to insert"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="fuck you"
+        android:id="@+id/selected_TV"
+        android:textSize="30sp"
+        android:padding="10dp"
+
+        app:layout_constraintTop_toBottomOf="@+id/insertPages_ET"
+        app:layout_constraintBottom_toTopOf="@+id/message"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+    <TextView
+        android:padding="10dp"
+        android:id="@+id/message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="what"
+        android:textSize="30sp"
+
+        app:layout_constraintTop_toBottomOf="@+id/selected_TV"
+        app:layout_constraintStart_toStartOf="parent"
+         />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
