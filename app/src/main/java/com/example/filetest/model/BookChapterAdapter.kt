@@ -1,6 +1,7 @@
 package com.example.filetest.model
 
 import android.text.Layout
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -40,8 +41,13 @@ class BookChapterAdapter() : PagingDataAdapter<BookChapter, BookChapterAdapter.V
         holder: ViewHolder,
         position: Int
     ) {
-        holder.binding.tvChapterName.text = getItem(position)?.title
-        holder.binding.tvContent.text = getItem(position)?.content
+        getItem(position)?.let {
+            holder.binding.tvChapterName.text = it.title
+            holder.binding.tvContent.text = it.content
+        }
+
     }
+
+
 
 }

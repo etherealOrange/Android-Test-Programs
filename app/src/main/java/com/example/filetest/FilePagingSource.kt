@@ -13,10 +13,11 @@ class FilePagingSource(
 ) : PagingSource<Int, BookChapter>() {
     override fun getRefreshKey(state: PagingState<Int, BookChapter>): Int? {
         // 获取最近访问的页码（通常是列表中间的位置）
-        return state.anchorPosition?.let { anchorPos ->
-            state.closestPageToPosition(anchorPos)?.prevKey?.plus(1)
-                ?: state.closestPageToPosition(anchorPos)?.nextKey?.minus(1)
-        }
+
+        Log.d("FPS", state.anchorPosition.toString())
+
+        return ( (state.anchorPosition ?: 0) - state.config.initialLoadSize / 2).coerceAtLeast(0)
+
     }
 
 
@@ -24,16 +25,10 @@ class FilePagingSource(
         return try {
             // 确定当前页码（首次加载时key为null）
             val pageNumber = params.key ?: 0// 当前页码(首次加载为null，默认0)
-//            val pageSize = 1000 // 每页大小
             val readChapterNum = 10
             val startChapterNum = pageNumber * readChapterNum
             val endChapterNum = (pageNumber + 1) * readChapterNum - 1
 
-
-            // 计算读取范围（每页100行）
-            //TODO:之后改为数据库表中的 章节 开始与结束 行号
-//            val startChapterLines = pageNumber * pageSize
-//            val endChapterLines = (pageNumber + 1) * pageSize - 1
             Log.d("FPS", "开始读取文件 1 的第 读$startChapterNum 章节 到 读$endChapterNum 章节")
 
             // 读取文件指定行
@@ -71,7 +66,7 @@ class FilePagingSource(
                         currentChapterNum++
                     }
                 }
-                Log.d("FPS","读取到文件 1 的第 ${currentChapterNum-1}章")
+                Log.d("FPS","读取到文件 1 的第 ${currentChapterNum}章")
                 //当前章节
                 var currentChapter: BookChapter? = null
                 //章节内容汇总
@@ -103,7 +98,7 @@ class FilePagingSource(
                         summaryContent.append(lineContent+"\n")
                     }
                 }
-                Log.d("FPS","读取到文件 2 的第 ${currentChapterNum}章\n")
+                Log.d("FPS","读取到文件 2 的第 ${currentChapterNum-1}章\n")
                 if(currentChapter!=null && summaryContent.isNotEmpty()) {
                     currentChapter = currentChapter.copy(
                         content = summaryContent.toString()
@@ -115,18 +110,8 @@ class FilePagingSource(
             }
         }.also {
             Log.d("FPS","it ${it.hashCode()} size ${it.size}")
-            //it.forEach { Log.d("FPS","得到的Chapter  ${it.title} \n ${it.content}") }
         }
 
-/*        file.readLines()
-            .subList(start.coerceAtLeast(0), end.coerceAtMost(file.readLines().lastIndex))
-            .mapIndexed { index, content ->
-//                BookPage(lineNumber = start + index + 1, content)
-                BookPage(
-                    pageId = start + index + 1,
-                    chapterName = "Chapter ${start / 100 + 1}",
-                    content = content
-                )
-            }*/
+
     }
 }

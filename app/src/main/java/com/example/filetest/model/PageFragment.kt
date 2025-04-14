@@ -16,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.filetest.MyViewModel
 import com.example.filetest.R
 import com.example.filetest.databinding.FragmentPageBinding
+import com.example.filetest.ui.main.ExtendFragment
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
@@ -23,7 +24,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 // PageFragment.kt
-class PageFragment : Fragment() {
+class PageFragment : ExtendFragment() {
     private var _binding: FragmentPageBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MyViewModel by activityViewModels()
@@ -78,19 +79,13 @@ class PageFragment : Fragment() {
         binding.tvContent.setOnClickListener {
             Log.d("Page","点击了 ${i++}")
         }
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                Log.d("Page","创建协程")
-                viewModel.scroll2
-                    .debounce(200)
-                    .filter { isVisible }
-                    .collectLatest {
-                        Log.d("PageFragment","scrollY $it")
-                    }
+
+        viewModel.scroll2
+            .debounce(200)
+            .filter { isVisible }
+            .launchLifeScopeCollectLatest {
+                Log.d("PageFragment","scrollY $it")
             }
-        }
-
-
 
     }
 

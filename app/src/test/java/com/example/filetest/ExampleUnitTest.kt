@@ -1,5 +1,8 @@
 package com.example.filetest
 
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -12,6 +15,15 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        flow {emit("a")
+            delay(100)
+            emit("b") }.flatMapLatest {
+            value ->
+                flow {
+                    emit(value)
+                    delay(200)
+                    emit(value + "_last")
+                }
+            }
     }
 }
